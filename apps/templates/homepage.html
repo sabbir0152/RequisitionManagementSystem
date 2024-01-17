@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home Page</title>
+    <style>
+        body{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            
+        }
+        
+       
+        
+        .buttons {
+            margin-top: 80px;
+        }
+        .content{
+            background-image: url('/static/images/bg.jpg');
+            background-size: cover;
+            
+            padding:200px;
+            background-position: bottom;
+            background-repeat: no-repeat;
+            text-align: center;
+           
+        }
+        
+        .button {
+            box-shadow: 5px 5px #6d6c6c;
+            display: inline-block;
+            padding: 10px 40px;
+            background-color: #02be02;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            margin: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .button:hover {
+            background-color: #0056b3;
+           
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+        .banner {
+            background-color: white;
+            padding: 5px;
+            text-align: center;
+            }
+
+            .banner h1 {
+            color: #e04848;
+            font-size: 34px;
+            }
+
+            .banner .logo img {
+            width: 190px;
+            height: auto;
+            margin-top: 20px;
+            }
+            .logo {
+            position: absolute;
+    
+            top: 10px;
+            left: 20px;
+        }
+       .banner h2{
+        font-size: 20px;
+        color:blue;
+        text-align: right;
+       }
+       .popup-container {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        height: 400px;
+        background-color: #fff;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+    }
+    
+    /* Styling for the popup overlay */
+    .popup-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9998;
+    }
+    
+    /* Styling for the close button */
+    .popup-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+    .profile{
+        position: fixed;
+        top: 20px;
+        right: 70px;
+    }
+    .profile a {
+        display: block;
+        width: 40px;
+        height: 40px;
+        background-color: #fff;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        line-height: 40px;
+        }
+
+        .profile img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50px;
+        vertical-align: middle;
+        }
+        .navigation {
+    background-color: #7b90d4;
+    padding: 10px;
+}
+.navigation ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navigation ul li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.navigation ul li a {
+    font-family: "Segoe UI", Arial, sans-serif;
+    text-decoration: none;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+.navigation ul li a:hover {
+    background-color: #21c0b8;
+}
+
+.dropdown-content {
+    font-family: "Segoe UI", Arial, sans-serif;
+    display: none;
+    position: absolute;
+    background-color: wheat;
+    color:black;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: #080808;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+    </style>
+</head>
+<body>
+    <div class="banner">
+    <h1>Requisition Management System</h1>
+    <h2>Welcome, {{ username }}!</h2>
+    <div class="profile">
+        {%if user.photo%}
+        <a href="{% url 'profile_details' %}" ><img src="{{ user.photo.url }}"  alt="Logo"></a>
+        {%else%}
+        <a href="{% url 'profile_details' %}" ><img src="/static/images/profile.png"   alt="Logo"></a>
+        {%endif%}
+    </div>
+    <div class="logo">
+        <img src="/static/images/logo.png" alt="Logo">
+    </div>
+    
+    </div>
+
+    <div class="navigation">
+        <ul>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Store Balance</a>
+                <div class="dropdown-content">
+                  
+                    <a href="{% url 'store_balance_list' %}">Store Balance List</a>
+                </div>
+            </li>
+           
+            <li class="dropdown"><a href="{% url 'login_view' %}">Logout</a></li>
+        </ul>
+    </div>
+    
+
+
+
+    <div class="content">
+    <div class="buttons">
+        <div class="dropdown">
+            <a href="#" class="button">Requisition</a>
+            <div class="dropdown-content">
+                <a href="{{ create_requisition_url }}">Create Requisition</a>
+                <a href="{{ requisition_list_url }}">Requisition List</a>
+                <a href="{{ workorder_list_url }}">Work Order List</a>
+            </div>
+            
+        </div>
+        <div class="dropdown">
+        <a href="#" class="button">Issue</a>
+        <div class="dropdown-content">
+            <a href="issue/create/">Create Issue</a>
+            <a href="issue/list/">TransactionList</a>
+           
+        </div>
+        </div>
+        <div class="dropdown">
+            <a href="#" class="button">Product</a>
+            <div class="dropdown-content">
+                <a href="product_list/list/">Products</a>
+                <a href="{{store_balance_url}}">Store Balance</a>
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="popup-overlay" id="popup-overlay"></div>
+<div class="popup-container" id="popup-container">
+    <h2>Notifications:</h2>
+    {% for issue in issues %}
+        <div class="issue-notification">
+            <h3>Issue No.: {{ issue.issue_no }}</h3>
+            <p>{{ issue.description }}</p>
+            <p>Status: {{ issue.status }}</p>
+            <form method="POST" action="{% url 'accept_issue' issue.issue_no %}">
+                {% csrf_token %}
+                <button type="submit">Accept</button>
+            </form>
+            <form method="POST" action="{% url 'reject_issue' issue.issue_no %}">
+                {% csrf_token %}
+                <button type="submit">Reject</button>
+            </form>
+        </div>
+    {% empty %}
+        <p>No notifications.</p>
+    {% endfor %}
+    <span class="popup-close" id="popup-close">&times;</span>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var issuesCount = parseInt('{{ issues.count }}');
+        if (issuesCount > 0) {
+            // Show the popup
+            $('#popup-overlay').show();
+            $('#popup-container').show();
+        }
+        
+        // Close the popup when the close button or overlay is clicked
+        $('#popup-close, #popup-overlay').click(function() {
+            $('#popup-overlay').hide();
+            $('#popup-container').hide();
+        });
+    });
+</script>
+</body>
+</html>

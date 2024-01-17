@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Requisition List</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 3px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #252525;
+            color: white;
+        }
+        .empty-message {
+            font-style: italic;
+        }
+        .banner {
+            background-color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .banner h1 {
+            color: #c51b1b;
+            font-size: 34px;
+        }
+
+        .banner .logo img {
+            width: 190px;
+            height: auto;
+            margin-top: 20px;
+        }
+
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+        }
+
+        .update-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .update-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .form-input {
+            margin-bottom: 10px;
+        }
+
+        .form-input label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-input input[type="text"],
+        .form-input select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .submit-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background-color: #45a049;
+        }
+        .profile{
+        position: fixed;
+        top: 20px;
+        right: 70px;
+    }
+    .profile a {
+        display: block;
+        width: 40px;
+        height: 40px;
+        background-color: #fff;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        line-height: 40px;
+        }
+
+        .profile img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50px;
+        vertical-align: middle;
+        }
+        h2{
+            font-size: 20px;
+            position: fixed;
+        top: 60px;
+        right: 40px;
+        }
+        .navigation {
+    background-color: #546cb9;
+    padding: 10px;
+}
+
+.navigation ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navigation ul li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.navigation ul li a {
+    font-family: "Segoe UI", Arial, sans-serif;
+    text-decoration: none;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+.navigation ul li a:hover {
+    background-color: #21c0b8;
+}
+
+.dropdown-content {
+    font-family: "Segoe UI", Arial, sans-serif;
+    display: none;
+    position: absolute;
+    background-color: #1b1b1f;
+    color:black;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: #080808;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <h1>Administration</h1>
+        <h2>Welcome, {{ username }}!</h2> 
+        <div class="profile">
+            {%if user.photo%}
+            <a href="{% url 'profile_details' %}" ><img src="{{ user.photo.url }}"  alt="Logo"></a>
+            {%else%}
+            <a href="{% url 'profile_details' %}" ><img src="/static/images/profile.png"   alt="Logo"></a>
+            {%endif%}
+            </div>
+        <div class="logo">
+            <img src="/static/images/logo.png" alt="Logo">
+        </div>
+    </div>
+    <div class="navigation">
+        <ul>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Store Balance</a>
+                <div class="dropdown-content">
+                  
+                    <a href="{% url 'store_balance_list' %}">Store Balance List</a>
+                </div>
+            </li>
+           
+            <li class="dropdown"><a href="{% url 'login_view' %}">Logout</a></li>
+        </ul>
+    </div>
+    
+    
+    {% if requisitions %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Created By</th>
+                    <th>Department Name</th>
+                    <th>Requisition Date</th>
+                    <th>Requisition No.</th>
+                    <th>Remark</th>
+                    <th>Approval Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for requisition in requisitions %}
+                    <tr>
+                        <td>{{ requisition.user_name }}</td>
+                        <td>{{ requisition.department_name }}</td>
+                        <td>{{ requisition.requisition_date }}</td>
+                        <td>{{ requisition.requisition_no }}</td>
+                        <td>{{ requisition.remark }}</td>
+                        <td>{{ requisition.get_approval_status_display }}</td>
+                        <td>
+                            <button class="update-button" data-requisition-id="{{ requisition.requisition_no }}">Send Response</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="empty-message">No requisitions found for Approval</p>
+    {% endif %}
+
+    <!-- Popup HTML -->
+    <div id="update-popup" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Update Approval Status</h2>
+            <form id="update-form" method="post">
+                {% csrf_token %}
+                <input type="hidden" id="requisition-id-input" name="requisition_no" value="">
+                <div class="form-input">
+                    <label for="username">User Name:</label>
+                    <input type="text" id="username" name="username">
+                </div>
+                <div class="form-input">
+                    <label for="approval-role-select">Approval Role:</label>
+                    <select id="approval-role-select" name="approval_role">
+                      
+                        <option value="Administration">Administration</option>
+                    </select>
+                </div>
+                <div class="form-input">
+                    <label for="approval-status-select">Approval Status:</label>
+                    <select id="approval-status-select" name="status" required>
+                        <option value="Pending">Pending</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+                <div class="form-input">
+                    <label for="remark">Remarks:</label>
+                    <input type="text" id="remark" name="remark" required>
+                </div>
+                <button type="submit" class="submit-button">Update</button>
+            </form>
+            
+        </div>
+    </div>
+
+    <!-- JavaScript code -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // When the update button is clicked
+            $('.update-button').click(function() {
+                // Get the requisition ID from the data attribute
+                var requisitionId = $(this).data('requisition-id');
+
+                // Set the requisition ID in the hidden input field
+                $('#requisition-id-input').val(requisitionId);
+
+                // Display the popup
+                $('#update-popup').show();
+            });
+
+            // When the close button is clicked
+            $('.close-button').click(function() {
+                // Hide the popup
+                $('#update-popup').hide();
+            });
+
+            // When the update form is submitted
+            $('#update-form').submit(function(e) {
+                e.preventDefault();
+
+                // Get the form data
+                var formData = $(this).serialize();
+
+                // Send an AJAX request to update the approval status
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "update_approval_status3" %}',
+                    data: formData,
+                    success: function(response) {
+                        // Close the popup
+                        $('#update-popup').hide();
+
+                        // Handle the response as needed (e.g., show a success message, refresh the page)
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle the error response as needed
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

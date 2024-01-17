@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Requisition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/neat/1.8.0/neat.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f2f3f5;
+        }
+
+        h1 {
+            color: #5f2f02;
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        form input[type="text"],
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button[type="submit"] {
+            background-color: #af4c65;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        form button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        form select,
+        form input[type="date"],
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+
+        .back-button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #09c237;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #07729c;
+        }
+    </style>
+</head>
+<body>
+    <h1>CREATE REQUISITION</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-xs-12">
+                <label for="user_name">User Name:</label>
+                <input type="text" id="user_name" name="user_name" maxlength="100" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <label for="department_name">Department:</label>
+                <select id="department_name" name="department_name">
+                    {% for department in department_list %}
+                        <option value="{{ department.department_name }}">{{ department.department_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <label for="requisition_date">Requisition Date:</label>
+                <input type="date" id="requisition_date" name="requisition_date" value="{{ today }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <label for="remark">Remark:</label>
+                <textarea id="remark" name="remark" rows="4" cols="50"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="submit">Create</button>
+            </div>
+        </div>
+    </form>
+    <div class="back-button-container">
+        <a href="{% url 'home_page' %}" class="back-button">Go back to home page</a>
+    </div>
+</body>
+</html>

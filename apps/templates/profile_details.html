@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile Details</title>
+    <style>
+        /* CSS styles here */
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-family: "Segoe UI", Arial, sans-serif;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .profile-photo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-photo img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .links-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .links-container a {
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .links-container a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Profile Details</h1>
+        {%if user.photo%}
+        <div class="profile-photo">
+            <img src="{{ user.photo.url }}" alt="Profile Photo">
+        </div>
+        {%else%}
+         <p>No Profile Photo</p>
+        {%endif%}
+        <p><strong>Username:</strong>{{ user.username }}</p>
+        <p><strong>Full Name:</strong> {{ user.full_name }}</p>
+        <p><strong>Department:</strong> {{ user.department }}</p>
+        <p><strong>Designation:</strong> {{ user.designation }}</p>
+        <p><strong>Join Date:</strong> {{ user.join_date }}</p>
+        <p><strong>Date of Birth:</strong> {{ user.dob }}</p>
+        <p><strong>Blood Group:</strong> {{ user.blood_group }}</p>
+        <p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+        <p><strong>Primary Email:</strong> {{ user.primary_email }}</p>
+        <p><strong>Secondary Email:</strong> {{ user.secondary_email }}</p>
+        <!-- Include other profile fields as needed -->
+
+        <div class="links-container">
+            <a href="{% url 'update_profile' %}">Edit Profile</a>
+            <!-- Link to the update profile page -->
+
+            <a href="{% url 'update_credentials' %}" class="button">Update Credentials</a>
+        
+
+            <!-- Link back to the home page or any other relevant page -->
+        </div>
+    </div>
+</body>
+</html>

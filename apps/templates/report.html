@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #5247e6;
+            color: white;
+        }
+        .header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 40px;
+            color:brown;
+        }
+        .header p {
+            margin: 4px 0;
+            font-size: 20px;
+        }
+        .button-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .button-container button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .button-container button:hover {
+            background-color: #45a049;
+        }
+        
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .popup-content {
+            background-color: white;
+            margin: 20px auto;
+            padding: 20px;
+            width: 60%;
+            max-width: 600px;
+        }
+
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .Heading h1{
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 20px;
+        }
+
+        .section {
+            flex-basis: calc(33.33% - 20px);
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .section h2 {
+            margin-top: 0;
+        }
+        .button-container {
+        text-align: right;
+        margin-bottom: 20px;
+    }
+
+    .add-report-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+
+    .add-report-button:hover {
+        background-color: #45a049;
+    }
+    .dt{
+        text-align: right;
+        font-size: 18px;
+    }
+    .dep{
+        text-align: left;
+        font-size: 18px;
+    }
+    .name{
+        text-align: left;
+        font-size: 18px;
+    }
+    .req{
+        text-align: right;
+        font-size: 18px;
+    }
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .name,
+    .req,
+    .dep,
+    .dt {
+        flex-basis: 25%;
+        text-align: center;
+    }
+
+    .name {
+        text-align: left;
+    }
+
+    .req {
+        text-align: right;
+    }
+
+    .name span,
+    .req span,
+    .dep span,
+    .dt span {
+        font-weight: bold;
+    }
+       
+ .back-button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #09c237;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #07729c;
+        } 
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="Heading"></div>
+        <h1>UITS</h1>
+        <p>Holding 190, Road 5, Block J, Baridhara, Maddha, Naya Nagar Rd, Dhaka 1212</p>
+        </div>
+        
+    </div>
+    <div class="container">
+        <div class="name">
+            <p>
+                Name: <span>{{ req.user_name }}</span>
+            </p>
+        </div>
+        <div class="req">
+            <p>
+                Requisition No.: <span>{{ req.requisition_no }}</span>
+            </p>
+        </div>
+        <div class="dep">
+            <p>Department: <span>{{ req.department_name }}</span></p>
+        </div>
+        <div class="dt">
+           <p>Date: <span>{{ req.requisition_date }}</span></p> 
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>SL</th>
+                <th>Item Details</th>
+                <th>Brand Name</th>
+                <th>Unit</th>
+                <th>Requisition Qty</th>
+                <th>Requisition Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in report %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.item_details }}</td>
+                    <td>{{ item.brand_name }}</td>
+                    <td>{{ item.unit }}</td>
+                    <td>{{ item.requisition_qty }}</td>
+                    <td>{{ item.requisition_date }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Add report button -->
+    <div class="button-container">
+        <a href="{% url 'add_report' requisition_no %}" class="add-report-button">Add Report</a>
+    </div>
+
+    <!-- Add report popup form -->
+    <div id="add-report-popup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h2>Add Products</h2>
+            <form action="{% url 'add_report' requisition_no %}" method="POST">
+                {% csrf_token %}
+                <label for="item_details">Item Details:</label>
+                <select id="item_details" name="item_details">
+                    {% for product in product_list %}
+                        <option value="{{ product.material_name }}">{{ product.material_name }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <label for="brand_name">Brand Name:</label>
+                <select id="brand_name" name="brand_name">
+                    {% for product in product_list %}
+                        <option value="{{ product.brand }}">{{ product.brand }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <label for="unit">Unit:</label>
+                <input type="text" id="unit" name="unit" required>
+                <br>
+                <label for="requisition_qty">Requisition Qty:</label>
+                <input type="number" id="requisition_qty" name="requisition_qty" required>
+                <br>
+                <label for="requisition_date">Requisition Date:</label>
+                <input type="date" id="requisition_date" name="requisition_date" required>
+                <br>
+                <button type="submit">Submit</button>
+            </form>
+            
+            
+        </div>
+    </div>
+    <div class="container">
+        <div class="section">
+            <h2>Created By</h2>
+            <label for="username">Name: {{ req.user_name }}</label>
+            <br>
+            <label for="status">Status: Initial</label>
+        </div>
+
+        <div class="section">
+            <h2>Department Head</h2>
+            {% for item in dh %}
+            <label for="username">Name: {{ item.username }}</label>
+            <br>
+            <label for="status">Status: {{ item.get_status_display }}</label>
+            <br>
+            {% endfor %}
+        </div>
+
+        <div class="section">
+            <h2>Store Executive</h2>
+            {% for s in se %}
+            <label for="username">Name: {{ s.username }}</label>
+            <br>
+            <label for="status">Status: {{ s.get_status_display }}</label>
+            <br>
+            {% endfor %}
+        </div>
+
+        <div class="section">
+            <h2>Administration</h2>
+            {% for s in adm %}
+            <label for="username">Name: {{ s.username }}</label>
+            <br>
+            <label for="status">Status: {{ s.get_status_display }}</label>
+            <br>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        // Get the elements
+        const addReportButton = document.querySelector(".add-report-button");
+        const addReportPopup = document.getElementById("add-report-popup");
+        const closeButton = document.querySelector(".close");
+        const reportForm = document.getElementById("report-form");
+
+        // Open the popup
+        addReportButton.addEventListener("click", function(event) {
+            event.preventDefault();
+            addReportPopup.style.display = "block";
+        });
+
+        // Close the popup
+        closeButton.addEventListener("click", function() {
+            addReportPopup.style.display = "none";
+        });
+
+        // Submit the form
+        reportForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            reportForm.submit();
+        });
+    </script>
+     <div class="back-button-container">
+        <a href="{% url 'home_page' %}" class="back-button">Go back to home page</a>
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Requisition List</title>
+    <style>
+        body{
+            font-family: 'Segoe UI', sans-serif;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 3px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #252525;
+            color: white;
+        }
+        .empty-message {
+            font-style: italic;
+        }
+        .banner {
+            background-color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .banner h1 {
+            color: #c51b1b;
+            font-size: 34px;
+        }
+
+        .banner .logo img {
+            width: 190px;
+            height: auto;
+            margin-top: 20px;
+        }
+
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+        }
+
+        .filter-form {
+            margin-bottom: 20px;
+        }
+
+        .filter-form input[type="text"] {
+            padding: 5px;
+        }
+
+        .filter-form button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .view-report-link {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.view-report-link:hover {
+    background-color: #45a049;
+}
+.back-button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #09c237;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #07729c;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <h1>Requisition Management System</h1>
+        <div class="logo">
+            <img src="/static/images/logo.png" alt="Logo">
+        </div>
+    </div>
+    <h1>Requisition List</h1>
+    <div class="filter-form">
+        <form method="GET">
+            <input type="text" name="requisition_number" placeholder="Enter Requisition Number">
+            <button type="submit">Filter</button>
+        </form>
+    </div>
+    {% if requisitions %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Created By</th>
+                    <th>Department Name</th>
+                    <th>Requisition Date</th>
+                    <th>Requisition No.</th>
+                    <th>Remark</th>
+                    <th>Approval Status</th>
+                    <th>Report</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for requisition in requisitions %}
+                    <tr>
+                        <td>{{ requisition.user_name }}</td>
+                        <td>{{ requisition.department_name }}</td>
+                        <td>{{ requisition.requisition_date }}</td>
+                        <td>{{ requisition.requisition_no }}</td>
+                        <td>{{ requisition.remark }}</td>
+                        <td>{{ requisition.get_approval_status_display }}</td>
+                        <td>
+                            <a href="{% url 'report' requisition.requisition_no %}" target="_blank" class="view-report-link">View Report</a>
+                        </td>
+                         </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="empty-message">No requisitions found.</p>
+    {% endif %}
+    <div class="back-button-container">
+        <a href="{% url 'home_page' %}" class="back-button">Go back to home page</a>
+    </div>
+
+
+</body>
+</html>

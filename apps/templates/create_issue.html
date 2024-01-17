@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Issue</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f2f3f5;
+        }
+
+        h1 {
+            color: #5f2f02;
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="text"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button[type="submit"] {
+            background-color: #af4c65;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        form button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .back-button-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .back-button {
+        background-color: #1f0202;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .back-button:hover {
+        background-color: #999;
+    }
+    </style>
+</head>
+<body>
+    <h1>CREATE ISSUE</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="user_name">User Name:</label>
+        <input type="text" id="user_name" name="user_name">
+        </div>
+        <div class="form-group">
+            <label for="department_name">Department:</label>
+            <select id="department_name" name="department_name">
+                {% for department in department_list %}
+                    <option value="{{ department }}">{{ department }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="product_name">Product Name:</label>
+            <select id="product_name" name="product_name">
+                {% for product in product_list %}
+                    <option value="{{ product }}">{{ product }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="trans_date">Date:</label>
+            <input type="date" id="trans_date" name="trans_date">
+        </div>
+        <div class="form-group">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity">
+        </div>
+        <div class="form-group">
+            <label for="remark">Remark:</label>
+            <textarea id="remark" name="remark" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <input type="text" id="status" name="status" value="Initialize">
+        </div>
+        <button type="submit">Create</button>
+    </form>
+    <div class="back-button-container">
+        <a href="{% url 'home_page' %}" class="back-button">Go back to home page</a>
+    </div>
+
+</body>
+</html>

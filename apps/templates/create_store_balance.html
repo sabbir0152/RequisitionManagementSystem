@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Store Balance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        form label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        form select,
+        form input[type="number"],
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        form button[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        form button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        
+        .back-button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #09c237;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .back-button:hover {
+            background-color: #07729c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Store Balance</h1>
+        <form method="post" action="{% url 'create_store_balance' %}">
+            {% csrf_token %}
+            <label for="product_name">Product Name:</label>
+            <select id="product_name" name="product_name">
+                {% for product in product_list %}
+                    <option value="{{ product.material_name }}">{{ product.material_name }}</option>
+                {% endfor %}
+            </select>
+            <label for="brand">Brand:</label>
+            <select id="brand" name="brand">
+                {% for product in product_list %}
+                    <option value="{{ product.brand }}">{{ product.brand }}</option>
+                {% endfor %}
+            </select>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity">
+            <label for="remark">Remark:</label>
+            <textarea id="remark" name="remark" rows="4"></textarea>
+            <button type="submit">Create</button>
+        </form>
+        <div class="back-button-container">
+            <a href="{% url 'store_executive' %}" class="back-button">Go back to Store Executive</a>
+        </div>
+    </div>
+</body>
+
+
+</html>

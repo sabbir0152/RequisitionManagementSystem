@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Issue List</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            max-width: 200px;
+        }
+        .heading {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #252525;
+            color: white;
+        }
+        .update-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .update-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="/static/images/logo.png" alt="Logo">
+        </div>
+        <div class="heading">
+            <h1>Notifications</h1>
+        </div>
+        {% if st %}
+        <table>
+            <thead>
+                <tr>
+                    <th>User Name</th>
+                    <th>Department Name</th>
+                    <th>Issue No.</th>
+                    <th>Product Name</th>
+                    <th>Transaction Date</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Remark</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for issue in st %}
+                    <tr>
+                        <td>{{ issue.user_name }}</td>
+                        <td>{{ issue.department_name }}</td>
+                        <td>{{ issue.issue_no }}</td>
+                        <td>{{ issue.product_name }}</td>
+                        <td>{{ issue.trans_date }}</td>
+                        <td>{{ issue.quantity }}</td>
+                        <td>{{ issue.status }}</td>
+                        <td>{{ issue.remark }}</td>
+                        <td>
+                            <form action="{% url 'update_issue_status' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="issue_no" value="{{ issue.issue_no }}">
+                                <select id="approval-status-select" name="status" required>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                                <button type="submit" class="update-button">respond</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <h1>No Notifications...</h1>
+        {% endif %}
+    </div>
+</body>
+</html>
